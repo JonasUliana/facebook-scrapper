@@ -23,6 +23,11 @@ namespace Nullable.Scraping.Facebook.Models
         /// </summary>
         public DateTime When { get; set; }
         
+        /// <summary>
+        /// Link absoluto até a publicação.
+        /// </summary>
+        public string Link { get; set; }
+
         /*
          * TODO:
          * Implementar modelos de usuários;

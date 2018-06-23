@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Nullable.Scraping.Facebook.Interfaces;
+using Nullable.Scraping.Facebook.Models;
 using Nullable.Scraping.Facebook.Requests;
 
 namespace Nullable.Scraping.Facebook
@@ -15,8 +19,13 @@ namespace Nullable.Scraping.Facebook
 
         private readonly string _user;
         private readonly string _pass;
-        private readonly FacebookWebClient _client;
-
+        
+        internal static readonly FacebookWebClient Client = new FacebookWebClient();
+        
+        internal static string UserId { get; private set; }
+        internal static string Dtsg { get; private set; }
+        internal static string Privacyx { get; private set; }
+        
         #endregion
 
         #region Propriedades
@@ -24,17 +33,33 @@ namespace Nullable.Scraping.Facebook
         /// <summary>
         /// Cookies utilizados na sessão.
         /// </summary>
-        public CookieContainer Cookies => _client.Cookies;
+        public CookieContainer Cookies => Client.Cookies;
 
         /// <summary>
         /// Cabeçalho fixado para cada requisição.
         /// </summary>
         public Dictionary<string, string> FixedHeaders
         {
-            get => _client.FixedHeaders;
-            set => _client.FixedHeaders = value;
-        }        
+            get => Client.FixedHeaders;
+            set => Client.FixedHeaders = value;
+        }
 
+        /// <summary>
+        /// Identificador único do usuário.
+        /// </summary>
+        public string Id => UserId;
+        
+        /// <summary>
+        /// Identificador de sessão.
+        /// </summary>
+        public string FacebookDtsg => Dtsg;
+
+        /// <summary>
+        /// TODO: O que é isso velho? '-'
+        /// </summary>
+        public string FacebookPrivacyx => Privacyx;
+
+        
         #endregion
 
         #region Constantes
@@ -53,7 +78,6 @@ namespace Nullable.Scraping.Facebook
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
             _pass = pass ?? throw new ArgumentNullException(nameof(pass));
-            _client = new FacebookWebClient();
             FixedHeaders.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36");
         }
 
@@ -63,8 +87,8 @@ namespace Nullable.Scraping.Facebook
         /// <returns>Caso nenhum erro, verdadeiro.</returns>
         public async Task<bool> Login()
         {
-            await _client.Get(Root);
-            await _client.Post(Authentication, new Dictionary<string, string>
+            await Client.Get(Root);
+            await Client.Post(Authentication, new Dictionary<string, string>
             {
                 {"email", _user},
                 {"pass", _pass}
@@ -72,11 +96,38 @@ namespace Nullable.Scraping.Facebook
 
             foreach (Cookie cookie in Cookies.GetCookies(new Uri(Root)))
             {
-                if (cookie.Name == "c_user")
-                    return true;
+                if (cookie.Name != "c_user") continue;
+                UserId = cookie.Value;
+                var request = await Client.Get(Root);
+                var soup = await request.Content.ReadAsStringAsync();
+                
+                Dtsg = Regex.Match(soup, "<input[^>]*name=\"fb_dtsg\"[^>]*value=\"([^\"]*)\"")
+                    .Groups[0]
+                    .Value
+                    .Split('"')[5]
+                    .Replace("\"", string.Empty);
+                
+                Privacyx = Regex.Match(soup, "<input[^>]*name=\"privacyx\"[^>]*value=\"([^\"]*)\"")
+                    .Groups[0]
+                    .Value
+                    .Split('"')[7]
+                    .Replace("\"", string.Empty);
+                
+                return true;
             }
 
             return false;
-        }        
+        }
+
+        /// <summary>
+        /// Publica uma postagem no Facebook.
+        /// </summary>
+        /// <param name="post">Tipo da postagem.</param>
+        /// <returns>Informações genéricas da postagem.</returns>
+        public async Task<GenericPostModel> Publish(IPost<dynamic> post)
+        {
+            await post.Publish();
+            return post.GenericInformation;
+        }
     }
 }
