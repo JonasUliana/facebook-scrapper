@@ -64,8 +64,7 @@ namespace Nullable.Scraping.Facebook
         public async Task<bool> Login()
         {
             await _client.Get(Root);
-            
-            var response = await _client.Post(Authentication, new Dictionary<string, string>
+            await _client.Post(Authentication, new Dictionary<string, string>
             {
                 {"email", _user},
                 {"pass", _pass}
