@@ -44,6 +44,11 @@ namespace Nullable.Scraping.Facebook
 
         #endregion
         
+        /// <summary>
+        /// Construtor padrão, cira uma nova instância de <see cref="FacebookScraper"/>.
+        /// </summary>
+        /// <param name="user">Nome de usuário, e-mail ou telefone.</param>
+        /// <param name="pass">Senha do usuário.</param>
         public FacebookScraper(string user, string pass)
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
