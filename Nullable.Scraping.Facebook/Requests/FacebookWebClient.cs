@@ -10,7 +10,7 @@ namespace Nullable.Scraping.Facebook.Requests
     /// <summary>
     /// Gerencia requisições para o Facebook.
     /// </summary>
-    public class FacebookWebClient
+    internal class FacebookWebClient
     {
         #region Objetos locais
 
@@ -29,7 +29,7 @@ namespace Nullable.Scraping.Facebook.Requests
         /// <summary>
         /// Cabeçalho fixado para cada requisição.
         /// </summary>
-        public Dictionary<string, string> FixedHeaders { get; set; }
+        public Dictionary<string, string> FixedHeaders { get; set; } = new Dictionary<string, string>();
 
         #endregion
 
