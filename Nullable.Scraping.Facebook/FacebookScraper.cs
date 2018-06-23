@@ -77,6 +77,6 @@ namespace Nullable.Scraping.Facebook
             }
 
             return false;
-        }
+        }        
     }
 }
