@@ -32,3 +32,9 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains
+.idea/
