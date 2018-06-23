@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullable.Scraping.Facebook", "Nullable.Scraping.Facebook.csproj", "{7713E9DB-203E-48AB-A1C6-8F9EED0D877B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nullable.Scraping.Facebook.Cli", "..\Nullable.Scraping.Facebook.Cli\Nullable.Scraping.Facebook.Cli.csproj", "{78E4A205-3F51-494C-A55D-98F852110808}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{7713E9DB-203E-48AB-A1C6-8F9EED0D877B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7713E9DB-203E-48AB-A1C6-8F9EED0D877B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7713E9DB-203E-48AB-A1C6-8F9EED0D877B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78E4A205-3F51-494C-A55D-98F852110808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78E4A205-3F51-494C-A55D-98F852110808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78E4A205-3F51-494C-A55D-98F852110808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78E4A205-3F51-494C-A55D-98F852110808}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
